@@ -11,7 +11,7 @@
 #           Path to gpg public keys images will be signed with
 
 defaults() {
-    [[ "$SERVER_DIR" ]] || SERVER_NAME="/var/aci"
+    [[ "$SERVER_DIR" ]] || SERVER_DIR="/var/aci"
     [[ "$ACI_DIRECTORY" ]] || ACI_DIRECTORY="$SERVER_DIR/store"
     [[ "$TEMPLATE_DIRECTORY" ]] || TEMPLATE_DIRECTORY="$SERVER_DIR/templates"
     [[ "$SERVER_NAME" ]] || SERVER_NAME="default"
