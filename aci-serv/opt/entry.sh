@@ -10,6 +10,14 @@
 #     -pubkeys string
 #           Path to gpg public keys images will be signed with
 
+exec_path() {
+    type -P $1
+}
+
+ensure_file() {
+    local "$@" ; [[ -e "$target" ]] || cp -f "$source" "$target"
+}
+
 defaults() {
     [[ "$SERVER_DIR" ]] || SERVER_DIR="/var/aci"
     [[ "$ACI_DIRECTORY" ]] || ACI_DIRECTORY="$SERVER_DIR/store"
@@ -27,20 +35,9 @@ directories() {
     [[ -e "$TEMPLATE_DIRECTORY" ]] || mkdir -p "$TEMPLATE_DIRECTORY"
 }
 
-ensure_file() {
-    local "$@" ; [[ -e "$target" ]] || cp -f "$source" "$target"
-}
-
-server_keys() {
+server_files() {
     ensure_file source="$location/keys.pub" target="$SERVER_KEYS"
-}
-
-server_index() {
     ensure_file source="$location/index.html" target="$TEMPLATE_DIRECTORY/index.html"
-}
-
-exec_path() {
-    type -P $1
 }
 
 ###
@@ -49,8 +46,7 @@ location=$(dirname $0)
 
 defaults
 directories
-server_keys
-server_index
+server_files
 
 command="$(exec_path acserver) \
     -port "$SERVER_PORT" \
