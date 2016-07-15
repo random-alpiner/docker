@@ -20,6 +20,7 @@ ensure_file() {
 
 defaults() {
     [[ "$SERVER_DIR" ]] || SERVER_DIR="/var/aci"
+    [[ "$SERVER_TLS" ]] || SERVER_TLS="no"
     [[ "$ACI_DIRECTORY" ]] || ACI_DIRECTORY="$SERVER_DIR/store"
     [[ "$TEMPLATE_DIRECTORY" ]] || TEMPLATE_DIRECTORY="$SERVER_DIR/templates"
     [[ "$SERVER_NAME" ]] || SERVER_NAME="default"
@@ -48,7 +49,11 @@ defaults
 directories
 server_files
 
-command="$(exec_path acserver) \
+server_tls=$([[ $SERVER_TLS == 'yes' ]] && echo '-https')
+
+command="\
+    $(exec_path acserver) \
+    $server_tls \
     -port "$SERVER_PORT" \
     -pubkeys "$SERVER_KEYS" \
     "$SERVER_NAME" \
